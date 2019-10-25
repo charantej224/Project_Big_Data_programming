@@ -37,7 +37,8 @@ class MyStreamListener(tweepy.StreamListener):
 
     def on_status(self, status):
         try:
-            csvWriter.writerow([status.created_at, status.entities, status.text.encode('utf-8')])
+            self.formString(status)
+            #csvWriter.writerow([status.created_at, status.entities, status.text.encode('utf-8')])
             # csvWriter.writerow([status._json])
             print(status._json)
 
@@ -49,6 +50,18 @@ class MyStreamListener(tweepy.StreamListener):
         if status_code == 420:
             # returning False in on_error disconnects the stream
             return False
+
+    def formString(self,status):
+        hashtags = ""
+        urls = ""
+        symbols = ""
+        for hashtag in status.entities['hashtags']:
+            hashtags += "$" + hashtag
+        for url in status.entities['urls']:
+            urls += "$" + url
+        for symbol in status.entities['symbols']:
+            symbols += "$" + symbol
+        csvWriter.writerow([status.author.name, status.author.location, status.author.description,status.created_at, status.source, status.text,hashtags,urls,symbols])
 
 
 myStreamListener = MyStreamListener()
