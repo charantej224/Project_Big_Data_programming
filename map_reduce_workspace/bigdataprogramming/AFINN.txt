@@ -1,0 +1,1 @@
+/tmp/hadoop-saiaravindreddymannem/mapred/local/1572146524473/AFINN.txt
