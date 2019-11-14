@@ -8,6 +8,8 @@ import org.apache.hadoop.mapreduce.Reducer;
 
 public class SentimentAnalysisReducer extends Reducer<Text, IntWritable, Text, IntWritable> {
 
+	
+	
 	@Override
 	public void reduce(Text inputKey, Iterable<IntWritable> inputValues, Context context)
 			throws IOException, InterruptedException {
@@ -16,8 +18,9 @@ public class SentimentAnalysisReducer extends Reducer<Text, IntWritable, Text, I
 		for (IntWritable eachValue : inputValues) {
 			outputValue += eachValue.get();
 		}
+		String sentiment = String.valueOf(outputValue);
 		if (!outputKey.trim().equalsIgnoreCase("")) {
-			context.write(new Text(outputKey.trim()), new IntWritable(outputValue));
+			context.write(new Text(outputKey.trim() +"," + sentiment), null);
 			System.out.println(outputKey + outputValue);
 		}
 
