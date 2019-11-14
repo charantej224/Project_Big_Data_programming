@@ -36,20 +36,23 @@ public class SentimentAnalysisMapper extends Mapper<LongWritable, Text, Text, In
 			}
 			br.close();
 			in.close();
-		} catch(Exception exception) {
+		} catch (Exception exception) {
 			exception.printStackTrace();
 			throw exception;
 		}
 		
+		
+
 	}
 
 	@Override
 	public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
 		String line = value.toString();
 		line = line.toLowerCase().trim();
-		if("".equalsIgnoreCase(line))
+		String[] splitArray = line.split(",");
+		if ("".equalsIgnoreCase(line) || splitArray.length != 6)
 			return;
-		String[] tuple = line.split("[,|\"| ]");
+		String[] tuple = splitArray[5].split("[,|\"| ]");
 		int sentimentAnalysis = 0;
 		for (int i = 0; i < tuple.length; i++) {
 			if (AFINN_map.containsKey(tuple[i])) {
