@@ -42,7 +42,6 @@ class SentimentAnalysis:
         a = np.array([input_message])
         tokenizer = Tokenizer(num_words=2000)
         tokenizer.fit_on_texts(a)
-        # getting the vocabulary of data
         sentences = tokenizer.texts_to_matrix(a)
         with self.graph.as_default():
             return self.model.predict_classes(sentences)
@@ -51,7 +50,6 @@ class SentimentAnalysis:
         a = np.array(input_message_list)
         tokenizer = Tokenizer(num_words=2000)
         tokenizer.fit_on_texts(a)
-        # getting the vocabulary of data
         sentences = tokenizer.texts_to_matrix(a)
         with self.graph.as_default():
-            return self.model.predict(sentences)
+            return self.model.predict_classes(sentences)

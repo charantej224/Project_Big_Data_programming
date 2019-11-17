@@ -6,10 +6,6 @@ import tweepy
 from apps.reports.write_report import WriteReport
 
 
-# Go to http://apps.twitter.com and create an app.
-# The consumer key and secret will be generated for you after
-
-
 class TwitterStreamer(tweepy.StreamListener):
 
     def __init__(self, time_limit, sentiment):
@@ -46,6 +42,7 @@ class TwitterStreamer(tweepy.StreamListener):
     def on_status(self, status):
         try:
             self.tweet_list.append(status.text)
+            print(status.text + "\n")
             if datetime.now() > self.end_time:
                 predicted = self.sentiment.predict_outcome_list(self.tweet_list)
                 WriteReport(self.tweet_list, predicted).write_file()

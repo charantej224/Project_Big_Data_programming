@@ -1,9 +1,8 @@
-from apps.sentiment_analysis.sentiment_analysis import SentimentAnalysis
 from flask import Flask, request
-from apps.models.predict_model import PredictModel
+
+from apps.sentiment_analysis.stream_twitter import TwitterStreamer
 from apps.models.sentiment_model import SentimentModel
-from apps.data_extraction.stream_twitter import TwitterStreamer
-import numpy as np
+from apps.sentiment_analysis.sentiment_analysis import SentimentAnalysis
 
 app = Flask(__name__)
 
