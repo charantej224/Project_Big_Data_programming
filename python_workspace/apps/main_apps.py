@@ -1,3 +1,5 @@
+import threading
+
 from flask import Flask, request
 
 from apps.sentiment_analysis.stream_twitter import TwitterStreamer
@@ -22,13 +24,18 @@ def sentiment_of_message():
     return sentiment_model.to_json_message()
 
 
+def start_stream(val, file_name):
+    TwitterStreamer(val, file_name, sentiment_analysis)
+
+
 @app.route('/sentiment-analyse-stream', methods=['POST'])
 def stream_twitter_message():
     message = request.get_json()
     val = int(str(message['time']))
     file_name = message['writeFile']
-    TwitterStreamer(val, file_name, sentiment_analysis)
-    return '<html><b>Twitter Streaming App<b></html>'
+    thread = threading.Thread(target=start_stream, args=(val, file_name,))
+    thread.start()
+    return 'Streaming Request Processed'
 
 
 def init_app():

@@ -4,6 +4,7 @@ from datetime import datetime
 from datetime import timedelta
 import tweepy
 from apps.reports.write_report import WriteReport
+import threading
 
 
 class TwitterStreamer(tweepy.StreamListener):
