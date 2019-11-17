@@ -7,8 +7,8 @@ class WriteReport:
         self.neutral = 0
         self.length = 0
 
-    def write_file(self):
-        f = open("report.txt", "w")
+    def write_file(self, file_name):
+        f = open(file_name, "w")
         self.length = len(self.input_list)
         for i in range(self.length):
             if self.predicted_list[i] == 0:

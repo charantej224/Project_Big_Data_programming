@@ -8,7 +8,8 @@ from apps.reports.write_report import WriteReport
 
 class TwitterStreamer(tweepy.StreamListener):
 
-    def __init__(self, time_limit, sentiment):
+    def __init__(self, time_limit, file_name, sentiment):
+        self.file_name = file_name
         self.start_time = datetime.now()
         self.delta_time = timedelta(minutes=time_limit)
         self.end_time = self.start_time + self.delta_time
@@ -45,7 +46,7 @@ class TwitterStreamer(tweepy.StreamListener):
             print(status.text + "\n")
             if datetime.now() > self.end_time:
                 predicted = self.sentiment.predict_outcome_list(self.tweet_list)
-                WriteReport(self.tweet_list, predicted).write_file()
+                WriteReport(self.tweet_list, predicted).write_file(self.file_name)
                 return False
         except BaseException as e:
             print('problem collecting tweet', str(e))

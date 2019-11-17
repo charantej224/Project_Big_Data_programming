@@ -26,7 +26,8 @@ def sentiment_of_message():
 def stream_twitter_message():
     message = request.get_json()
     val = int(str(message['time']))
-    stream = TwitterStreamer(val, sentiment_analysis)
+    file_name = message['writeFile']
+    TwitterStreamer(val, file_name, sentiment_analysis)
     return '<html><b>Twitter Streaming App<b></html>'
 
 
