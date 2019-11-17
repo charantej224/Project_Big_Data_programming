@@ -5,12 +5,14 @@ import pandas as pd
 from sklearn import preprocessing
 from sklearn.model_selection import train_test_split
 import numpy as np
+import tensorflow as tf
 
 
 class SentimentAnalysis:
 
     def __init__(self):
         self.model = None
+        self.graph = tf.get_default_graph()
 
     def prepare_model(self):
         df = pd.read_csv('data_set/train_data.csv', encoding='latin-1')
@@ -42,4 +44,14 @@ class SentimentAnalysis:
         tokenizer.fit_on_texts(a)
         # getting the vocabulary of data
         sentences = tokenizer.texts_to_matrix(a)
-        return self.model.predict(sentences)
+        with self.graph.as_default():
+            return self.model.predict_classes(sentences)
+
+    def predict_outcome_list(self, input_message_list):
+        a = np.array(input_message_list)
+        tokenizer = Tokenizer(num_words=2000)
+        tokenizer.fit_on_texts(a)
+        # getting the vocabulary of data
+        sentences = tokenizer.texts_to_matrix(a)
+        with self.graph.as_default():
+            return self.model.predict(sentences)
