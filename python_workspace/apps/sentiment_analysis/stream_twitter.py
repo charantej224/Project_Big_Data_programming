@@ -44,7 +44,7 @@ class TwitterStreamer(tweepy.StreamListener):
     def on_status(self, status):
         try:
             self.tweet_list.append(status.text)
-            print(status.text + "\n")
+            # print(status.text + "\n")
             if datetime.now() > self.end_time:
                 predicted = self.sentiment.predict_outcome_list(self.tweet_list)
                 WriteReport(self.tweet_list, predicted).write_file(self.file_name)

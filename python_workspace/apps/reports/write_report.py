@@ -24,4 +24,8 @@ class WriteReport:
         f.write("\nPositive Percentage : " + str((self.positive / self.length) * 100))
         f.write("\nNegative Percentage : " + str((self.negative / self.length) * 100))
         f.write("\nNeutral Percentage : " + str((self.neutral / self.length) * 100))
+        print("\nPositive Percentage : " + str((self.positive / self.length) * 100))
+        print("\nNegative Percentage : " + str((self.negative / self.length) * 100))
+        print("\nNeutral Percentage : " + str((self.neutral / self.length) * 100))
+
         f.close()

@@ -3,13 +3,16 @@ import threading
 from flask import Flask, request
 
 from apps.sentiment_analysis.stream_twitter import TwitterStreamer
-from apps.models.sentiment_model import SentimentModel
+from apps.json_models.sentiment_model import SentimentModel
 from apps.sentiment_analysis.sentiment_analysis import SentimentAnalysis
+from apps.fakenews_analysis.fake_news_detection import FakeNewDetector
+
+from apps.model_handlers.handle_models import ModelTriggers
 
 app = Flask(__name__)
 
 sentiment_analysis = SentimentAnalysis()
-
+fake_news_detector = FakeNewDetector()
 
 @app.route('/')
 def twitter_analysis():
@@ -39,7 +42,8 @@ def stream_twitter_message():
 
 
 def init_app():
-    sentiment_analysis.prepare_model()
+    model_triggers = ModelTriggers(sentiment_analysis, fake_news_detector)
+    model_triggers.setup_models()
 
 
 if __name__ == "__main__":
