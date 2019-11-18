@@ -9,7 +9,7 @@ import threading
 
 class TwitterStreamer(tweepy.StreamListener):
 
-    def __init__(self, time_limit, file_name, sentiment):
+    def __init__(self, time_limit, file_name, sentiment, fake_news_detector):
         self.file_name = file_name
         self.start_time = datetime.now()
         self.delta_time = timedelta(minutes=time_limit)
@@ -17,6 +17,7 @@ class TwitterStreamer(tweepy.StreamListener):
         super(TwitterStreamer, self).__init__()
         self.tweet_list = []
         self.sentiment = sentiment
+        self.fake_news_detector = fake_news_detector
         self.setup_stream()
 
     def setup_stream(self):
@@ -46,8 +47,9 @@ class TwitterStreamer(tweepy.StreamListener):
             self.tweet_list.append(status.text)
             # print(status.text + "\n")
             if datetime.now() > self.end_time:
-                predicted = self.sentiment.predict_outcome_list(self.tweet_list)
-                WriteReport(self.tweet_list, predicted).write_file(self.file_name)
+                sentiment_predicted = self.sentiment.predict_outcome_list(self.tweet_list)
+                fake_news_predicted = self.fake_news_detector.predict_outcome_list(self.tweet_list)
+                WriteReport(self.tweet_list, sentiment_predicted, fake_news_predicted).write_file(self.file_name)
                 return False
         except BaseException as e:
             print('problem collecting tweet', str(e))

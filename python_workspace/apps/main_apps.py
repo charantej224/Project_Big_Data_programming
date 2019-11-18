@@ -2,6 +2,7 @@ import threading
 
 from flask import Flask, request
 
+from apps.json_models.fake_response_model import FakeDetectionModel
 from apps.sentiment_analysis.stream_twitter import TwitterStreamer
 from apps.json_models.sentiment_model import SentimentModel
 from apps.sentiment_analysis.sentiment_analysis import SentimentAnalysis
@@ -13,6 +14,7 @@ app = Flask(__name__)
 
 sentiment_analysis = SentimentAnalysis()
 fake_news_detector = FakeNewDetector()
+
 
 @app.route('/')
 def twitter_analysis():
@@ -27,8 +29,16 @@ def sentiment_of_message():
     return sentiment_model.to_json_message()
 
 
+@app.route('/detect-fake-news', methods=['POST'])
+def detect_fake_news():
+    message = request.get_json()
+    val = fake_news_detector.predict_outcome(str(message['message']))
+    fake_news_model = FakeDetectionModel(val[0])
+    return fake_news_model.to_json_message()
+
+
 def start_stream(val, file_name):
-    TwitterStreamer(val, file_name, sentiment_analysis)
+    TwitterStreamer(val, file_name, sentiment_analysis, fake_news_detector)
 
 
 @app.route('/sentiment-analyse-stream', methods=['POST'])

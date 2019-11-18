@@ -1,7 +1,8 @@
 class WriteReport:
-    def __init__(self, input_list, predicted_list):
+    def __init__(self, input_list, predicted_list, fake_new_predicted):
         self.input_list = input_list
         self.predicted_list = predicted_list
+        self.fake_new_predicted = fake_new_predicted
         self.positive = 0
         self.negative = 0
         self.neutral = 0
@@ -20,7 +21,8 @@ class WriteReport:
             else:
                 response = "Positive"
                 self.positive += 1
-            f.write(self.input_list[i] + " : predicted : " + response + "\n")
+            f.write(self.input_list[i] + " : predicted : " + response + " : Fake Detection: " + self.fake_new_predicted[
+                i] + "\n")
         f.write("\nPositive Percentage : " + str((self.positive / self.length) * 100))
         f.write("\nNegative Percentage : " + str((self.negative / self.length) * 100))
         f.write("\nNeutral Percentage : " + str((self.neutral / self.length) * 100))
