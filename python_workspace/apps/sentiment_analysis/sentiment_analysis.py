@@ -36,14 +36,11 @@ class SentimentAnalysis:
         self.model.add(layers.Dense(56, input_dim=2000, activation='relu'))
         self.model.add(layers.Dense(3, activation='sigmoid'))
         self.model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['acc'])
-        history = self.model.fit(X_train, y_train, epochs=20, verbose=True, validation_data=(X_test, y_test),
+        history = self.model.fit(X_train, y_train, epochs=50, verbose=2, validation_data=(X_test, y_test),
                                  batch_size=256)
-        plot.plot(history.history['loss'])
-        plot.title('model loss')
-        plot.ylabel('loss')
-        plot.xlabel('epoch')
-        plot.legend(['train', 'test'], loc='upper left')
-        plot.show()
+        # plot.xlabel("epoch")
+        # plot.ylabel("loss")
+        # plot.plot(history.history['loss'])
 
     def predict_outcome(self, input_message):
         a = np.array([input_message])
