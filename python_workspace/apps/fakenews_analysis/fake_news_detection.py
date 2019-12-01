@@ -14,7 +14,6 @@ class FakeNewDetector:
 
     def prepare_model(self):
         df = pd.read_csv('data_set/news.csv', encoding='latin-1')
-        # df = pd.read_csv('news.csv', encoding='latin-1')
         df.head(10)
         x_train, x_test, y_train, y_test = train_test_split(df.text, df.label, test_size=0.2, random_state=7)
         tfidf_train = self.tf_idf_vectorizer.fit_transform(x_train)

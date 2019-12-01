@@ -6,6 +6,7 @@ from sklearn import preprocessing
 from sklearn.model_selection import train_test_split
 import numpy as np
 import tensorflow as tf
+import matplotlib.pyplot as plot
 
 
 class SentimentAnalysis:
@@ -37,6 +38,12 @@ class SentimentAnalysis:
         self.model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['acc'])
         history = self.model.fit(X_train, y_train, epochs=20, verbose=True, validation_data=(X_test, y_test),
                                  batch_size=256)
+        plot.plot(history.history['loss'])
+        plot.title('model loss')
+        plot.ylabel('loss')
+        plot.xlabel('epoch')
+        plot.legend(['train', 'test'], loc='upper left')
+        plot.show()
 
     def predict_outcome(self, input_message):
         a = np.array([input_message])
